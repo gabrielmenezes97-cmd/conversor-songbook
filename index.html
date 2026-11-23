@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Conversor de Cifra para SongbookPro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--fundo:#0c0c0e;--superficie:#131315;--superficie-2:#18181b;--superficie-3:#222226;--cab-escuro:color-mix(in srgb,var(--fundo) 65%,#000);--borda:#232327;--borda-forte:#2e2e33;--texto:#ececef;--texto-2:#a1a1aa;--texto-3:#71717a;--ouro:#c9a227;--ouro-claro:#e2c25a;--ouro-texto:#d4ad2e;--ouro-tinta:#1c1505;--ok:#5fb98a;--alerta:#e0a63a;--erro:#e3685f;--sel:color-mix(in srgb,var(--superficie) 84%,var(--ouro));--sombra:0 8px 24px rgba(0,0,0,.4);--scroll:rgba(255,255,255,.16);--acorde:var(--ouro-texto)}
+:root[data-theme="light"]{--fundo:#eeeef1;--superficie:#ffffff;--superficie-2:#f6f6f8;--superficie-3:#e7e7eb;--cab-escuro:#e4e4e9;--borda:#e2e2e7;--borda-forte:#cfcfd6;--texto:#18181b;--texto-2:#4b4b55;--texto-3:#6b6b75;--ouro-texto:#8a6a00;--ok:#23804f;--alerta:#a8670f;--erro:#c2412f;--sombra:0 1px 2px rgba(16,16,24,.06);--scroll:rgba(24,24,27,.22)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--fundo);color:var(--texto);font:400 14px/1.45 Inter,system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+svg.ri{width:16px;height:16px;fill:currentColor;flex:none}
+*{scrollbar-width:thin;scrollbar-color:var(--scroll) transparent}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:var(--scroll);border-radius:8px}::-webkit-scrollbar-thumb:hover{background:var(--ouro)}::-webkit-scrollbar-track{background:transparent}
+:focus-visible{outline:2px solid color-mix(in srgb,var(--ouro) 40%,transparent);outline-offset:2px}
+
+/* Barra do topo */
+.topo{position:sticky;top:0;z-index:20;background:var(--fundo);border-bottom:1px solid var(--borda)}
+.topo-in{max-width:1440px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:12px}
+.topo h1{font-size:20px;font-weight:600;margin:0;letter-spacing:-.01em}
+.topo .sub{font-size:13px;color:var(--texto-2)}
+.topo .esp{flex:1}
+
+/* Botões */
+.btn{height:32px;padding:0 12px;border-radius:6px;border:1px solid transparent;font:500 13.5px Inter,sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
+.btn-pri{background:var(--ouro);color:var(--ouro-tinta);font-weight:600}.btn-pri:hover{background:var(--ouro-claro)}
+.btn-sec{background:var(--superficie-2);border-color:var(--borda-forte);color:var(--texto)}.btn-sec:hover{border-color:var(--texto-3)}
+.btn-fan{background:transparent;color:var(--texto-2)}.btn-fan:hover{background:var(--superficie-2);color:var(--texto)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-ico{width:32px;padding:0}
+kbd{font:500 11px Inter,sans-serif;color:var(--texto-3);border:1px solid var(--borda-forte);border-radius:4px;padding:0 4px;line-height:16px}
+
+/* Estrutura */
+.app{max-width:1440px;margin:0 auto;padding:16px 20px 24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;height:calc(100vh - 57px);height:calc(100dvh - 57px)}
+.col{display:flex;flex-direction:column;gap:12px;min-height:0}
+.card{background:var(--superficie);border:1px solid var(--borda);border-radius:10px;box-shadow:var(--sombra);display:flex;flex-direction:column;min-height:0}
+.card-cab{display:flex;align-items:center;gap:8px;padding:10px 12px 10px 16px;border-bottom:1px solid var(--borda);min-height:52px}
+.card-cab .rot{flex:1}
+.rot{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--texto-3)}
+.card-corpo{padding:16px;flex:1;min-height:0;display:flex;flex-direction:column}
+.card-rodape{display:flex;align-items:center;gap:8px;padding:10px 12px 10px 16px;border-top:1px solid var(--borda);background:var(--cab-escuro);border-radius:0 0 10px 10px}
+.card-rodape .esp{flex:1}
+.flex1{flex:1;min-height:0}
+
+/* Campos */
+.campos{display:grid;grid-template-columns:2fr 2fr 1fr 1fr;gap:12px;padding:16px}
+.campo label{display:block;font-size:12px;color:var(--texto-2);margin-bottom:4px}
+.campo .wrap{position:relative}
+.campo input{width:100%;height:32px;border-radius:6px;border:1px solid var(--borda-forte);background:var(--fundo);color:var(--texto);font:400 13.5px Inter,sans-serif;padding:0 28px 0 10px;transition:border-color .15s,box-shadow .15s}
+.campo input.curto{padding-right:10px}
+.campo input:focus{outline:none;border-color:var(--ouro);box-shadow:0 0 0 3px color-mix(in srgb,var(--ouro) 18%,transparent)}
+.campo input::placeholder{color:var(--texto-3)}
+.campo input.auto{color:var(--ouro-texto)}
+.limpar-x{position:absolute;right:4px;top:6px;width:20px;height:20px;border:0;border-radius:4px;background:transparent;color:var(--texto-3);display:none;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.limpar-x:hover{color:var(--texto);background:var(--superficie-3)}
+.limpar-x svg{width:14px;height:14px}
+.wrap.tem .limpar-x{display:flex}
+.dica{font-size:11.5px;color:var(--texto-3);margin-top:4px;min-height:16px}
+.dica.auto{color:var(--ouro-texto)}
+
+/* Área de texto */
+textarea{width:100%;flex:1;min-height:0;resize:none;border:1px solid var(--borda-forte);border-radius:6px;background:var(--fundo);color:var(--texto);font:400 13px/1.55 ui-monospace,"SF Mono",Menlo,Consolas,monospace;padding:12px;white-space:pre;overflow:auto;tab-size:4}
+textarea:focus{outline:none;border-color:var(--ouro);box-shadow:0 0 0 3px color-mix(in srgb,var(--ouro) 18%,transparent)}
+textarea::placeholder{color:var(--texto-3)}
+
+/* Caixa de seleção personalizada */
+.opcoes{display:flex;flex-wrap:wrap;gap:8px 20px;padding-top:12px}
+.chk{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--texto-2);cursor:pointer;user-select:none}
+input[type=checkbox]{appearance:none;-webkit-appearance:none;width:16px;height:16px;margin:0;border:1.5px solid var(--texto-3);border-radius:4px;background:transparent;display:grid;place-content:center;cursor:pointer;flex:none;transition:background .12s,border-color .12s}
+input[type=checkbox]::after{content:"";width:9px;height:5px;border-left:2px solid var(--ouro-tinta);border-bottom:2px solid var(--ouro-tinta);transform:rotate(-45deg) translate(1px,-1px);opacity:0}
+input[type=checkbox]:checked{background:var(--ouro);border-color:var(--ouro)}
+input[type=checkbox]:checked::after{opacity:1}
+input[type=checkbox]:focus-visible{outline:2px solid color-mix(in srgb,var(--ouro) 40%,transparent);outline-offset:2px}
+
+/* Abas modelo C */
+.abas{display:flex;gap:4px;position:relative}
+.aba{height:32px;padding:0 12px;border:0;background:transparent;color:var(--texto-2);font:500 13.5px Inter,sans-serif;display:inline-flex;align-items:center;gap:6px;cursor:pointer;border-radius:8px 8px 3px 3px;position:relative}
+.aba svg{color:var(--texto-3)}
+.aba:hover{color:var(--texto)}
+.aba.on{color:var(--texto);background:var(--sel)}
+.aba.on svg{color:var(--ouro)}
+.aba.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--ouro);border-radius:2px}
+.cont{font-size:11px;font-weight:600;padding:0 6px;border-radius:999px;background:var(--superficie-2);border:1px solid var(--borda);color:var(--texto-3);line-height:16px}
+.aba.on .cont{color:var(--texto-2)}
+
+/* Etiquetas */
+.etqs{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px 0}
+.etq{font-size:11.5px;font-weight:500;padding:2px 9px;border-radius:6px;display:inline-flex;align-items:center;gap:4px}
+.etq.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 15%,transparent)}
+.etq.ouro{color:var(--ouro-texto);background:color-mix(in srgb,var(--ouro) 15%,transparent)}
+.etq.alerta{color:var(--alerta);background:color-mix(in srgb,var(--alerta) 15%,transparent)}
+.etq.erro{color:var(--erro);background:color-mix(in srgb,var(--erro) 15%,transparent)}
+
+/* Pré-visualização */
+.preview{flex:1;min-height:0;overflow:auto;border:1px solid var(--borda);border-radius:6px;background:var(--superficie-2);padding:16px 18px}
+.vazio{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;color:var(--texto-2);padding:24px}
+.vazio .q{width:40px;height:40px;border-radius:10px;background:var(--superficie-3);display:grid;place-content:center;color:var(--texto-3);margin-bottom:6px}
+.vazio .q svg{width:20px;height:20px}
+.vazio b{color:var(--texto);font-weight:600;font-size:14px}
+.vazio span{font-size:13px;max-width:320px}
+.pv-title{font-size:18px;font-weight:600;margin-bottom:2px}
+.pv-meta{color:var(--texto-2);font-size:13px;margin-bottom:12px}
+.pv-meta b{color:var(--texto);font-weight:600}
+.pv-sec{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ouro-texto);margin:14px 0 4px}
+.pv-line{display:flex;flex-wrap:wrap;align-items:flex-end;margin-bottom:6px}
+.pv-seg{display:inline-flex;flex-direction:column;white-space:pre}
+.pv-ch{color:var(--acorde);font-weight:600;font-size:12.5px;line-height:1.2;padding-right:6px}
+.pv-ly{font-size:14.5px;line-height:1.35}
+.pv-gap{height:10px}
+.pv-tab{font:12px/1.35 ui-monospace,Menlo,Consolas,monospace;background:var(--fundo);border:1px solid var(--borda);border-radius:6px;padding:8px 10px;overflow:auto;margin:4px 0 8px;color:var(--texto-2)}
+#out{display:none}
+
+/* Painel de ajuda (lateral por cima) */
+.painel{position:fixed;top:0;right:0;bottom:0;width:400px;max-width:100%;background:var(--superficie);border-left:1px solid var(--borda-forte);box-shadow:-12px 0 32px rgba(0,0,0,.35);z-index:40;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.2,.8,.2,1);visibility:hidden}
+.painel.on{transform:none;visibility:visible}
+.painel .card-cab{padding-left:20px}
+.painel-corpo{padding:16px 20px;overflow:auto;font-size:13.5px;color:var(--texto-2)}
+.painel-corpo h3{font-size:14px;font-weight:600;color:var(--texto);margin:18px 0 6px}
+.painel-corpo h3:first-child{margin-top:0}
+.painel-corpo ol,.painel-corpo ul{padding-left:18px;margin:6px 0}
+.painel-corpo li{margin:4px 0}
+.painel-corpo code{font:12px ui-monospace,Menlo,monospace;background:var(--superficie-2);border:1px solid var(--borda);border-radius:4px;padding:0 4px;color:var(--texto)}
+
+/* Aviso */
+.aviso{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);opacity:0;background:var(--superficie-3);border:1px solid var(--borda-forte);border-radius:10px;padding:10px 16px;font-size:13.5px;z-index:50;transition:opacity .2s,transform .2s;pointer-events:none;box-shadow:var(--sombra)}
+.aviso.on{opacity:1;transform:translate(-50%,0)}
+
+/* Celular */
+.so-cel{display:none}
+.barra-cel{display:none}
+@media (max-width:900px){
+  .topo-in{padding:10px 14px}
+  .topo h1{font-size:17px}.topo .sub{display:none}
+  .txt-pc{display:none}
+  .so-cel{display:flex}
+  .passos{position:sticky;top:53px;z-index:15;background:var(--fundo);border-bottom:1px solid var(--borda);padding:6px 14px 0}
+  .passos .aba{flex:1;justify-content:center}
+  .app{display:block;height:auto;padding:12px 14px 88px}
+  .col{gap:12px}
+  .col[data-passo="2"]{display:flex;flex-direction:column}
+  .col[data-passo="2"] .card:first-child{order:2}
+  .col[data-passo]:not(.ativo){display:none!important}
+  .col[data-passo]:not(.ativo){display:none}
+  .campos{grid-template-columns:1fr 1fr;padding:14px}
+  .campos .largo{grid-column:span 2}
+  textarea{min-height:56vh;font-size:12.5px}
+  .preview{min-height:56vh}
+  .card-rodape.pc{display:none}
+  .barra-cel{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:8px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:var(--cab-escuro);border-top:1px solid var(--borda)}
+  .barra-cel .btn{height:40px;flex:1;font-size:14px}
+  .barra-cel .btn-fan{flex:0 0 auto}
+  .painel{width:100%}
+  .aviso{bottom:80px}
+}
+</style></head>
+<body>
+<header class="topo"><div class="topo-in">
+  <div><h1>Conversor de cifra</h1><div class="sub">Cola a cifra do Cifra Club e sai pronta para o SongbookPro</div></div>
+  <div class="esp"></div>
+  <button class="btn btn-fan" id="bAjuda" title="Como importar no SongbookPro"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM13 13.3551V14H11V12.5C11 11.9477 11.4477 11.5 12 11.5C12.8284 11.5 13.5 10.8284 13.5 10C13.5 9.17157 12.8284 8.5 12 8.5C11.2723 8.5 10.6656 9.01823 10.5288 9.70577L8.56731 9.31346C8.88637 7.70919 10.302 6.5 12 6.5C13.933 6.5 15.5 8.067 15.5 10C15.5 11.5855 14.4457 12.9248 13 13.3551Z"/></svg><span class="txt-pc">Como importar</span></button>
+  <button class="btn btn-sec" id="bTema"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893ZM16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364ZM19.0711 3.51472L20.4853 4.92893L18.364 7.05025L16.9497 5.63604L19.0711 3.51472ZM5.63604 16.9497L7.05025 18.364L4.92893 20.4853L3.51472 19.0711L5.63604 16.9497ZM23 11V13H20V11H23ZM4 11V13H1V11H4Z"/></svg><span class="txt-pc" id="tTema">Tema claro</span></button>
+</div>
+<div class="passos so-cel"><div class="abas" role="tablist" style="width:100%">
+  <button class="aba on" data-passo="1" role="tab"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 3V17C20 19.2091 18.2091 21 16 21C13.7909 21 12 19.2091 12 17C12 14.7909 13.7909 13 16 13C16.7286 13 17.4117 13.1948 18 13.5351V5H9V17C9 19.2091 7.20914 21 5 21C2.79086 21 1 19.2091 1 17C1 14.7909 2.79086 13 5 13C5.72857 13 6.41165 13.1948 7 13.5351V3H20ZM5 19C6.10457 19 7 18.1046 7 17C7 15.8954 6.10457 15 5 15C3.89543 15 3 15.8954 3 17C3 18.1046 3.89543 19 5 19ZM16 19C17.1046 19 18 18.1046 18 17C18 15.8954 17.1046 15 16 15C14.8954 15 14 15.8954 14 17C14 18.1046 14.8954 19 16 19Z"/></svg>1. Cifra</button>
+  <button class="aba" data-passo="2" role="tab"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.0003 3C17.3924 3 21.8784 6.87976 22.8189 12C21.8784 17.1202 17.3924 21 12.0003 21C6.60812 21 2.12215 17.1202 1.18164 12C2.12215 6.87976 6.60812 3 12.0003 3ZM12.0003 19C16.2359 19 19.8603 16.052 20.7777 12C19.8603 7.94803 16.2359 5 12.0003 5C7.7646 5 4.14022 7.94803 3.22278 12C4.14022 16.052 7.7646 19 12.0003 19ZM12.0003 16.5C9.51498 16.5 7.50026 14.4853 7.50026 12C7.50026 9.51472 9.51498 7.5 12.0003 7.5C14.4855 7.5 16.5003 9.51472 16.5003 12C16.5003 14.4853 14.4855 16.5 12.0003 16.5ZM12.0003 14.5C13.381 14.5 14.5003 13.3807 14.5003 12C14.5003 10.6193 13.381 9.5 12.0003 9.5C10.6196 9.5 9.50026 10.6193 9.50026 12C9.50026 13.3807 10.6196 14.5 12.0003 14.5Z"/></svg>2. Resultado<span class="cont" id="cCel" hidden></span></button>
+</div></div>
+</header>
+
+<main class="app">
+  <section class="col ativo" data-passo="1">
+    <div class="card flex1">
+      <div class="card-cab"><span class="rot">Cifra original</span><button class="btn btn-fan" id="bLimpar"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.58564 8.85449L3.63589 13.8042L8.83021 18.9985L9.99985 18.9978V18.9966H11.1714L14.9496 15.2184L8.58564 8.85449ZM9.99985 7.44027L16.3638 13.8042L19.1922 10.9758L12.8283 4.61185L9.99985 7.44027ZM13.9999 18.9966H20.9999V20.9966H11.9999L8.00229 20.9991L1.51457 14.5113C1.12405 14.1208 1.12405 13.4877 1.51457 13.0971L12.1212 2.49053C12.5117 2.1 13.1449 2.1 13.5354 2.49053L21.3136 10.2687C21.7041 10.6592 21.7041 11.2924 21.3136 11.6829L13.9999 18.9966Z"/></svg>Limpar</button></div>
+      <div class="card-corpo">
+        <textarea id="in" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Cole aqui a cifra inteira, com título, artista e “Tom:” do topo.
+
+Exemplo:
+Nome da Música
+Artista
+
+Tom: G
+
+     G           D
+Letra da música aqui"></textarea>
+        <div class="opcoes">
+          <label class="chk"><input type="checkbox" id="ps">Partes como texto (“Refrão:”)</label>
+          <label class="chk"><input type="checkbox" id="dt">Remover solos em tablatura</label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="col" data-passo="2">
+    <div class="card">
+      <div class="card-cab"><span class="rot">Dados da música</span></div>
+      <div class="campos">
+        <div class="campo largo"><label for="t">Título</label><div class="wrap"><input id="t" autocomplete="off"><button class="limpar-x" aria-label="Limpar campo" tabindex="-1"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"/></svg></button></div></div>
+        <div class="campo largo"><label for="a">Artista</label><div class="wrap"><input id="a" autocomplete="off"><button class="limpar-x" aria-label="Limpar campo" tabindex="-1"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"/></svg></button></div></div>
+        <div class="campo"><label for="k">Tom</label><div class="wrap"><input id="k" class="curto" autocomplete="off" placeholder="—"></div><div class="dica" id="dK"></div></div>
+        <div class="campo"><label for="c">Capotraste</label><div class="wrap"><input id="c" class="curto" inputmode="numeric" autocomplete="off" placeholder="—"></div><div class="dica" id="dC"></div></div>
+      </div>
+    </div>
+    <div class="card flex1">
+      <div class="card-cab">
+        <div class="abas" role="tablist">
+          <button class="aba on" data-v="pv" role="tab"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.0003 3C17.3924 3 21.8784 6.87976 22.8189 12C21.8784 17.1202 17.3924 21 12.0003 21C6.60812 21 2.12215 17.1202 1.18164 12C2.12215 6.87976 6.60812 3 12.0003 3ZM12.0003 19C16.2359 19 19.8603 16.052 20.7777 12C19.8603 7.94803 16.2359 5 12.0003 5C7.7646 5 4.14022 7.94803 3.22278 12C4.14022 16.052 7.7646 19 12.0003 19ZM12.0003 16.5C9.51498 16.5 7.50026 14.4853 7.50026 12C7.50026 9.51472 9.51498 7.5 12.0003 7.5C14.4855 7.5 16.5003 9.51472 16.5003 12C16.5003 14.4853 14.4855 16.5 12.0003 16.5ZM12.0003 14.5C13.381 14.5 14.5003 13.3807 14.5003 12C14.5003 10.6193 13.381 9.5 12.0003 9.5C10.6196 9.5 9.50026 10.6193 9.50026 12C9.50026 13.3807 10.6196 14.5 12.0003 14.5Z"/></svg>Pré-visualização</button>
+          <button class="aba" data-v="tx" role="tab"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12L18.3431 17.6569L16.9289 16.2426L21.1716 12L16.9289 7.75736L18.3431 6.34315L24 12ZM2.82843 12L7.07107 16.2426L5.65685 17.6569L0 12L5.65685 6.34315L7.07107 7.75736L2.82843 12ZM9.78845 21H7.66009L14.2116 3H16.3399L9.78845 21Z"/></svg>Texto</button>
+        </div>
+      </div>
+      <div class="etqs" id="etqs"></div>
+      <div class="card-corpo">
+        <div class="preview" id="pv"></div>
+        <textarea id="out" spellcheck="false" readonly></textarea>
+      </div>
+      <div class="card-rodape pc">
+        <span class="rot" style="text-transform:none;letter-spacing:0;font-weight:400;font-size:12px" id="nomeArq"></span>
+        <div class="esp"></div>
+        <button class="btn btn-sec" id="bCopiar"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>Copiar texto</button>
+        <button class="btn btn-pri" id="bBaixar"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z"/></svg>Baixar arquivo</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="barra-cel" id="barra1"><button class="btn btn-fan" id="bLimparCel">Limpar</button><button class="btn btn-pri" id="bConverter">Converter<svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg></button></div>
+<div class="barra-cel" id="barra2" style="display:none"><button class="btn btn-sec" id="bCopiarCel"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>Copiar</button><button class="btn btn-pri" id="bBaixarCel"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z"/></svg>Salvar arquivo</button></div>
+
+<aside class="painel" id="painel" aria-hidden="true">
+  <div class="card-cab"><span class="rot">Como importar no SongbookPro</span><button class="btn btn-fan" id="bFechar">Fechar <kbd>Esc</kbd></button></div>
+  <div class="painel-corpo">
+    <h3>Jeito completo (com título, tom e capo)</h3>
+    <ol>
+      <li>Toque em <b>Baixar arquivo</b> (no celular, <b>Salvar arquivo</b>). No celular abre o menu de compartilhar: escolha <b>Salvar em Arquivos</b>, o <b>Google Drive</b> ou direto o <b>SongbookPro</b>. O arquivo já sai como <code>.cho</code>.</li>
+      <li>No SongbookPro: menu principal → modo <b>Músicas</b> → botão de baixo → <b>Import file</b>.</li>
+      <li>Se salvou em Arquivos ou no Drive: no SongbookPro, <b>Import file</b> e escolha o arquivo. Dá para escolher vários de uma vez.</li>
+      
+    </ol>
+    <h3>Jeito rápido (só a letra e os acordes)</h3>
+    <p>Toque em <b>Copiar texto</b>, crie uma música nova no app e cole. Título, artista, tom e capo não entram por esse caminho: preencha no app.</p>
+    <h3>O que o conversor faz</h3>
+    <ul>
+      <li>Põe cada acorde entre <code>[ ]</code> no meio da palavra, na sílaba certa.</li>
+      <li>Linhas só de acordes (intro, “( C#m B4 A9 E )”) viram acordes que transpõem junto.</li>
+      <li>Partes (Intro, Refrão…) viram títulos de parte.</li>
+      <li>Solos em tablatura ficam num bloco alinhado.</li>
+      <li>Lê título, artista, tom e capo do topo da cifra. Se não houver “Tom:”, descobre o tom pelos acordes.</li>
+    </ul>
+    <h3>Acordes com nome diferente no app</h3>
+    <p>O app mostra B4 como Bsus4 na lista de acordes. É o mesmo acorde.</p>
+  </div>
+</aside>
+<div class="aviso" id="aviso" role="status"></div>
+
+<script>
+
+// Converte cifra "acorde em cima da letra" para formato inline [Acorde]
+const CHORD_RE = /^\(?[A-G](?:#|b)?(?:m|M|maj|min|dim|aug|sus|add|º|°|\+|-|\d|\(|\)|#|b|\/[0-9])*(?:\/[A-G](?:#|b)?)?\)?$/;
+const EXTRA_OK = /^(\(|\)|\||\|\||x\d+|\(?\d+x\)?|\(?x\d+\)?|-+|\.+|%|\/|N\.C\.?)$/i;
+const SECTION_RE = /^\s*\[([^\]]+)\]\s*(.*)$/;
+
+function isChord(t) { return CHORD_RE.test(t); }
+function isChordLine(line) {
+  const toks = line.trim().split(/\s+/).filter(Boolean);
+  if (!toks.length) return false;
+  let chords = 0;
+  for (const t of toks) {
+    if (isChord(t)) chords++;
+    else if (!EXTRA_OK.test(t)) return false;
+  }
+  return chords > 0;
+}
+function isExtraOnly(line){const t=line.trim().split(/\s+/).filter(Boolean);return t.length>0&&t.every(x=>EXTRA_OK.test(x));}
+function isTabLine(line) {
+  const t = line.trim();
+  const m = t.match(/^([A-Ga-g][#b]?)?\s*\|/);
+  if (!m) return false;
+  if (!/^([A-Ga-g][#b]?)?\s*\|[-0-9hpbrsvxt\/\\|~().*\s^]*$/.test(t)) return false;
+  const dashes = (t.match(/-/g) || []).length;
+  // Com nome da corda (E|, B|...) basta ter conteúdo de tab; sem nome, exige traços
+  return m[1] ? t.length >= 6 && /[-0-9]/.test(t.slice(2)) : dashes >= 4;
+}
+function tabStartsAt(lines, i) {
+  return i < lines.length && (isTabLine(lines[i]) || (isChordLine(lines[i]) && i + 1 < lines.length && isTabLine(lines[i + 1])));
+}
+
+function chordPositions(line) {
+  const out = []; const re = /\S+/g; let m;
+  while ((m = re.exec(line))) {
+    const t = m[0].replace(/^\(|\)$/g, '');
+    if (isChord(m[0]) && isChord(t)) out.push({ pos: m.index, chord: t });
+    else if (isChord(m[0])) out.push({ pos: m.index, chord: m[0] });
+  }
+  return out;
+}
+function merge(chordLine, lyric) {
+  const cps = chordPositions(chordLine);
+  let s = lyric;
+  const maxPos = cps.length ? cps[cps.length - 1].pos : 0;
+  if (s.length < maxPos) s = s + ' '.repeat(maxPos - s.length);
+  for (let i = cps.length - 1; i >= 0; i--) {
+    const { pos, chord } = cps[i];
+    s = s.slice(0, pos) + '[' + chord + ']' + s.slice(pos);
+  }
+  return s.replace(/_/g, '').replace(/\s+$/, '');
+}
+function chordsOnly(line, opts) {
+  line = line.replace(/\(\s*/g, '').replace(/\s*\)/g, ' ');
+  return line.trim().split(/\s+/).map(t => isChord(t) ? '[' + t.replace(/^\(|\)$/g, '') + ']' : t).join(' ');
+}
+
+// Texto colado do celular às vezes chega codificado (%20, %0A, %C3%A7...)
+function decodeIfEncoded(text) {
+  const n = (text.match(/%[0-9A-Fa-f]{2}/g) || []).length;
+  if (n < 8 || n < text.length / 40) return text;
+  try { return decodeURIComponent(text); }
+  catch (e) { return text.replace(/(%[0-9A-Fa-f]{2})+/g, m => { try { return decodeURIComponent(m); } catch (e2) { return m; } }); }
+}
+function convert(text, opts = {}) {
+  text = decodeIfEncoded(text).normalize('NFC')
+    .replace(/\r\n?|[\u2028\u2029\u0085\v\f]/g, '\n')
+    .replace(/\t/g, '    ')
+    .replace(/[\u00ad\u034f\u061c\u115f\u1160\u17b4\u17b5\u180e\u200b-\u200f\u202a-\u202e\u2060-\u206f\ufeff\ufe00-\ufe0f]/g, '')
+    .replace(/\p{Cf}/gu, '')
+    .replace(/[^\S\n]/g, ' ')
+    .replace(/[＃♯]/g, '#').replace(/♭/g, 'b');
+  // Celular: "Tom:" e "Capotraste:" às vezes vêm grudados no texto anterior
+  text = text.replace(/([^\n\s])[ ]*(?=(?:Tom|Capotraste|Capo|Afina[çc][ãa]o)\s*:)/g, '$1\n');
+  let lines = text.split('\n');
+  // Texto copiado do celular/site às vezes vem com linha em branco entre o acorde e a letra.
+  const nb = lines.filter(l => l.trim()).length, bl = lines.length - nb;
+  if (opts.joinBlank === true || (opts.joinBlank !== false && nb > 4 && bl >= nb * 0.6)) {
+    const res = []; let run = 0;
+    for (const l of lines) {
+      if (!l.trim()) { run++; continue; }
+      if (run >= 2 && res.length) res.push('');
+      res.push(l); run = 0;
+    }
+    lines = res;
+  }
+  const out = [];
+  // ---- Cabeçalho: título, artista, tom, capotraste ----
+  const meta = {};
+  const tomRe = /^\s*Tom:\s*([A-G][#b]?m?)(?:\s*\(\s*(?:com\s+)?forma\s+de\s+([A-G][#b]?m?)\s*\))?/i;
+  const capoInRe = /capo(?:traste)?\s*(?::|na|no|em)?\s*(\d{1,2})/i;
+  const capoRe = /^\s*capo(?:traste)?\s*(?::|na|no|em)?\s*(\d{1,2})\s*(?:ª|º|°|a|o)?\s*(?:casa|traste)?\s*$/i;
+  const footRe = /^\s*(composi[çc][ãa]o|colabora[çc][ãa]o|revis[ãa]o|letra e m[úu]sica|ver tamb[ée]m|exibir cifra|afina[çc][ãa]o)\b/i;
+  const skip = new Set();
+  lines.forEach((l, j) => {
+    let m;
+    if (j < 15 && !meta.key && (m = l.match(tomRe))) {
+      meta.key = m[2] || m[1]; if (m[2]) { meta.keySounding = m[1]; meta.keyShape = m[2]; }
+      const c2 = l.match(capoInRe); if (c2 && !meta.capo) meta.capo = c2[1];
+      skip.add(j);
+    }
+    else if (!meta.capo && (m = l.match(capoRe))) { meta.capo = m[1]; skip.add(j); }
+    else if (footRe.test(l)) skip.add(j);
+  });
+  let firstMusic = lines.findIndex((l, j) => !skip.has(j) && (isChordLine(l) || SECTION_RE.test(l) || isTabLine(l)));
+  if (firstMusic < 0) firstMusic = lines.length;
+  const tomLine = lines.findIndex((l, j) => j < 15 && tomRe.test(l));
+  const headEnd = tomLine >= 0 ? Math.min(tomLine, firstMusic) : firstMusic;
+  const headIdx = [];
+  for (let j = 0; j < headEnd && headIdx.length < 3; j++) if (!skip.has(j) && lines[j].trim()) headIdx.push(j);
+  // só considera cabeçalho se for curto e vier antes de qualquer acorde (até 2 linhas)
+  const headOk = headIdx.length >= 1 && headIdx.length <= 2 && headIdx.every(j => lines[j].trim().length < 70);
+  if (headOk && headIdx.length === 1) {
+    // Celular: título e artista grudados ("Bondade de DeusIsaías Saad")
+    const g = lines[headIdx[0]].trim().match(/^(.*?[a-zà-ÿ0-9!?)\]'’.])([A-ZÀ-Þ].*)$/);
+    if (g && g[1].length >= 2 && g[2].length >= 2) { meta.title = g[1].trim(); meta.artist = g[2].trim(); headIdx.forEach(j => skip.add(j)); }
+  }
+  if (headOk && !meta.title) {
+    meta.title = lines[headIdx[0]].trim();
+    if (headIdx[1] !== undefined) meta.artist = lines[headIdx[1]].trim();
+    headIdx.forEach(j => skip.add(j));
+  }
+  if (opts.meta) Object.assign(opts.meta, meta);
+  const T = opts.title || meta.title, A = opts.artist || meta.artist, K = opts.key || meta.key, C = opts.capo || meta.capo;
+  if (T) out.push('{title: ' + T + '}');
+  if (A) out.push('{artist: ' + A + '}');
+  if (K) out.push('{key: ' + K + '}');
+  if (C) out.push('{capo: ' + C + '}');
+  if (out.length) out.push('');
+  lines = lines.filter((_, j) => !skip.has(j));
+  const start = 0;
+  for (let i = start; i < lines.length; i++) {
+    const line = lines[i];
+    if (/^\s*Parte \d+ de \d+\s*$/i.test(line)) continue;
+    const sec = line.match(SECTION_RE);
+    if (sec && !isChord(sec[1].trim())) {
+      out.push(opts.plainSections ? sec[1].trim() + ':' : '{comment: ' + sec[1].trim() + '}');
+      if (sec[2].trim()) out.push(isChordLine(sec[2]) ? chordsOnly(sec[2], opts) : sec[2].trim());
+      continue;
+    }
+    if (tabStartsAt(lines, i)) {
+      const blk = [];
+      while (i < lines.length) {
+        if (tabStartsAt(lines, i) || isTabLine(lines[i])) { blk.push(lines[i].replace(/\s+$/, '')); i++; continue; }
+        if (!lines[i].trim()) {
+          let j = i; while (j < lines.length && !lines[j].trim() && j - i < 3) j++;
+          if (tabStartsAt(lines, j)) { blk.push(''); i = j; continue; }
+        }
+        break;
+      }
+      i--;
+      if (!opts.dropTabs) out.push('{start_of_tab}', ...blk, '{end_of_tab}');
+      continue;
+    }
+    if (isChordLine(line)) {
+      const next = lines[i + 1];
+      if (next !== undefined && next.trim() && !isChordLine(next) && !isExtraOnly(next) && !SECTION_RE.test(next) && !isTabLine(next)) {
+        out.push(merge(line, next)); i++;
+      } else out.push(chordsOnly(line, opts));
+      continue;
+    }
+    out.push(line.replace(/_/g, '').replace(/\s+$/, ''));
+  }
+  let res = out.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
+  const det = typeof detectKey === 'function' ? detectKey(res) : null;
+  if (opts.meta) opts.meta.detected = det;
+  if (!K && det) {
+    if (opts.meta) { opts.meta.key = det; opts.meta.keyAuto = true; }
+    const ls = res.split('\n');
+    let at = 0; while (at < ls.length && /^\{(title|artist)/.test(ls[at])) at++;
+    ls.splice(at, 0, '{key: ' + det + '}');
+    if (at === 0 && ls[1] !== '') ls.splice(1, 0, '');
+    res = ls.join('\n');
+  }
+  // Capotraste: o SongbookPro trata os acordes do arquivo como o tom real e,
+  // com {capo: N}, mostra os acordes N semitons abaixo. Então o arquivo leva
+  // os acordes como soam (forma + N) e o app mostra a forma que você toca.
+  const capoN = parseInt(C, 10);
+  if (opts.meta) opts.meta.preview = res;
+  if (capoN > 0 && capoN < 12) res = toSounding(res, capoN);
+  return res;
+}
+const SHARP = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const FLAT  = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+const NI = {C:0,'C#':1,Db:1,D:2,'D#':3,Eb:3,E:4,Fb:4,'E#':5,F:5,'F#':6,Gb:6,G:7,'G#':8,Ab:8,A:9,'A#':10,Bb:10,B:11,Cb:11,'B#':0};
+function shiftNote(n, k, flat) { const i = NI[n]; if (i === undefined) return n; return (flat ? FLAT : SHARP)[(i + k + 120) % 12]; }
+function shiftChord(ch, k, flat) {
+  return ch.replace(/^([A-G][#b]?)/, (m, r) => shiftNote(r, k, flat)).replace(/\/([A-G][#b]?)/, (m, r) => '/' + shiftNote(r, k, flat));
+}
+function usesFlats(key) {
+  if (!key) return false;
+  const m = key.match(/^([A-G][#b]?)(m?)/); if (!m) return false;
+  if (/b$/.test(m[1])) return true;
+  return m[2] ? ['D','G','C','F'].includes(m[1]) : ['F'].includes(m[1]);
+}
+function toSounding(text, k) {
+  const km = text.match(/^\{key:\s*([^}]+)\}/m);
+  const shapeKey = km ? km[1].trim() : null;
+  const realKey = shapeKey ? shiftChord(shapeKey, k, false) : null;
+  const flat = realKey ? (usesFlats(realKey) || usesFlats(shiftChord(shapeKey, k, true))) : false;
+  const realKeyName = shapeKey ? shiftChord(shapeKey, k, flat) : null;
+  let inTab = false;
+  return text.split('\n').map(line => {
+    if (/^\{(start_of_tab|sot)\}/.test(line)) { inTab = true; return line; }
+    if (/^\{(end_of_tab|eot)\}/.test(line)) { inTab = false; return line; }
+    if (inTab) return line;
+    if (/^\{key:/.test(line) && realKeyName) return '{key: ' + realKeyName + '}';
+    if (/^\{/.test(line)) return line;
+    return line.replace(/\[([^\]]+)\]/g, (m, c) => '[' + shiftChord(c, k, flat) + ']');
+  }).join('\n');
+}
+
+// ---- Detecção de tom ----
+const NOTE_IDX = {C:0,'C#':1,Db:1,D:2,'D#':3,Eb:3,E:4,Fb:4,'E#':5,F:5,'F#':6,Gb:6,G:7,'G#':8,Ab:8,A:9,'A#':10,Bb:10,B:11,Cb:11,'B#':0};
+const MAJ_SHARP = ['C','Db','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
+const MIN_NAMES = ['Cm','C#m','Dm','D#m','Em','Fm','F#m','Gm','G#m','Am','Bbm','Bm'];
+function parseChord(c) {
+  const m = c.replace(/^\(|\)$/g, '').match(/^([A-G])([#b]?)(.*)$/);
+  if (!m) return null;
+  const root = NOTE_IDX[m[1] + m[2]]; if (root === undefined) return null;
+  let q = m[3].split('/')[0];
+  let qual = 'M';
+  if (/^(m(?!aj)|min|-)/.test(q)) qual = /m7\(?b5|ø/.test(q) ? 'h' : 'm';
+  else if (/^(dim|º|°)/.test(q)) qual = 'd';
+  else if (/^(aug|\+)/.test(q)) qual = 'a';
+  const dom = qual === 'M' && /^7(?!M|\+)/.test(q);
+  return { root, qual, dom, flat: m[2] === 'b' };
+}
+function detectKey(text) {
+  const chords = [];
+  let inTab = false;
+  for (const line of text.split('\n')) {
+    if (/^\{(start_of_tab|sot)/.test(line)) { inTab = true; continue; }
+    if (/^\{(end_of_tab|eot)/.test(line)) { inTab = false; continue; }
+    if (inTab || /^\{/.test(line)) continue;
+    const re = /\[([^\]]+)\]/g; let m;
+    while ((m = re.exec(line))) { const p = parseChord(m[1]); if (p) chords.push(p); }
+  }
+  if (chords.length < 3) return null;
+  const MAJ = [[0,'M'],[2,'m'],[4,'m'],[5,'M'],[7,'M'],[9,'m'],[11,'d']];
+  let best = null, scores = [];
+  for (let k = 0; k < 12; k++) for (const minor of [false, true]) {
+    const tonicMaj = minor ? (k + 3) % 12 : k; // relativo maior
+    let sc = 0;
+    for (const c of chords) {
+      const deg = MAJ.find(([iv]) => (tonicMaj + iv) % 12 === c.root);
+      if (deg) {
+        const want = deg[1];
+        if (want === c.qual || (want === 'd' && c.qual === 'h')) sc += 1;
+        else if (c.qual === 'M' && minor && (c.root === (k + 7) % 12)) sc += 0.9; // V maior no tom menor
+        else sc += 0.25;
+      } else if (minor && c.root === (k + 7) % 12 && c.qual === 'M') sc += 0.9;
+      else sc -= 0.6;
+      if (c.dom && c.root === (k + 7) % 12) sc += 0.5; // dominante resolvendo no tom
+    }
+    const isT = c => c && c.root === k && (minor ? c.qual === 'm' : c.qual === 'M');
+    if (isT(chords[0])) sc += 2.5;
+    if (isT(chords[chords.length - 1])) sc += 2.5;
+    const tonicCount = chords.filter(isT).length;
+    sc += tonicCount * 0.4;
+    scores.push({ k, minor, sc });
+  }
+  scores.sort((a, b) => b.sc - a.sc);
+  best = scores[0];
+  const useFlat = chords.some(c => c.flat);
+  let name = best.minor ? MIN_NAMES[best.k] : MAJ_SHARP[best.k];
+  if (!useFlat) name = name.replace(/^Db/, 'C#').replace(/^Ab/, 'G#').replace(/^Eb(?!m)/, 'Eb');
+  if (useFlat) name = name.replace(/^C#m/, 'Dbm').replace(/^D#m/, 'Ebm').replace(/^G#m/, 'Abm').replace(/^F#/, 'Gb');
+  return name;
+}
+
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function renderPreview(cp){
+  const meta={};const body=[];let inTab=false,tab=[];
+  for(const line of cp.split('\n')){
+    let m;
+    if(/^\{(start_of_tab|sot)\}/i.test(line)){inTab=true;tab=[];continue;}
+    if(/^\{(end_of_tab|eot)\}/i.test(line)){inTab=false;body.push('<pre class="pv-tab">'+esc(tab.join('\n'))+'</pre>');continue;}
+    if(inTab){tab.push(line);continue;}
+    if((m=line.match(/^\{(title|t|artist|key|capo)\s*:\s*(.*)\}\s*$/i))){meta[m[1].toLowerCase()==='t'?'title':m[1].toLowerCase()]=m[2];continue;}
+    if((m=line.match(/^\{(?:comment|c)\s*:\s*(.*)\}\s*$/i))){body.push('<div class="pv-sec">'+esc(m[1])+'</div>');continue;}
+    if(!line.trim()){body.push('<div class="pv-gap"></div>');continue;}
+    if(!/\[[^\]]+\]/.test(line)){body.push('<div class="pv-line"><span class="pv-seg"><span class="pv-ch">&nbsp;</span><span class="pv-ly">'+esc(line)+'</span></span></div>');continue;}
+    const parts=line.split(/(\[[^\]]+\])/);let html='',pend=null;
+    const seg=(ch,ly)=>'<span class="pv-seg"><span class="pv-ch">'+(ch?esc(ch):'&nbsp;')+'</span><span class="pv-ly">'+(ly?esc(ly).replace(/ /g,'&nbsp;'):'&nbsp;')+'</span></span>';
+    for(const p of parts){
+      const cm=p.match(/^\[([^\]]+)\]$/);
+      if(cm){if(pend!==null)html+=seg(pend,'');pend=cm[1];}
+      else if(p){html+=seg(pend,p);pend=null;}
+    }
+    if(pend!==null)html+=seg(pend,'');
+    body.push('<div class="pv-line">'+html+'</div>');
+  }
+  if(inTab)body.push('<pre class="pv-tab">'+esc(tab.join('\n'))+'</pre>');
+  let head='';
+  if(meta.title)head+='<div class="pv-title">'+esc(meta.title)+'</div>';
+  const sub=[meta.artist&&esc(meta.artist),meta.key&&'Tom: <b>'+esc(meta.key)+'</b>',meta.capo&&'Capo: <b>'+esc(meta.capo)+'ª casa</b>'].filter(Boolean).join(' · ');
+  if(sub)head+='<div class="pv-meta">'+sub+'</div>';
+  return head+body.join('');
+}
+
+
+const $=id=>document.getElementById(id);
+const cel=()=>matchMedia('(max-width:900px)').matches;
+const VAZIO='<div class="vazio"><div class="q"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 3V17C20 19.2091 18.2091 21 16 21C13.7909 21 12 19.2091 12 17C12 14.7909 13.7909 13 16 13C16.7286 13 17.4117 13.1948 18 13.5351V5H9V17C9 19.2091 7.20914 21 5 21C2.79086 21 1 19.2091 1 17C1 14.7909 2.79086 13 5 13C5.72857 13 6.41165 13.1948 7 13.5351V3H20ZM5 19C6.10457 19 7 18.1046 7 17C7 15.8954 6.10457 15 5 15C3.89543 15 3 15.8954 3 17C3 18.1046 3.89543 19 5 19ZM16 19C17.1046 19 18 18.1046 18 17C18 15.8954 17.1046 15 16 15C14.8954 15 14 15.8954 14 17C14 18.1046 14.8954 19 16 19Z"/></svg></div><b>Nenhuma cifra ainda</b><span>Cole a cifra do lado esquerdo. A música aparece aqui como vai ficar no SongbookPro.</span></div>';
+const fields={t:'title',a:'artist',k:'key',c:'capo'};
+const userVal=id=>$(id).dataset.auto==='1'?'':$(id).value.trim();
+let ultimo='';
+
+function aviso(msg){const a=$('aviso');a.textContent=msg;a.classList.add('on');clearTimeout(aviso._t);aviso._t=setTimeout(()=>a.classList.remove('on'),msg.length>60?7000:3500);}
+function syncX(inp){const w=inp.closest('.wrap');if(w)w.classList.toggle('tem',!!inp.value);}
+function nomeArquivo(){return (($('t').value.trim()||'musica')+($('a').value.trim()?' - '+$('a').value.trim():'')).replace(/[\\/:*?"<>|]/g,'').slice(0,100)+'.txt';}
+
+function run(){
+  {const raw=$('in').value,dec=decodeIfEncoded(raw);if(dec!==raw){$('in').value=dec;aviso('Texto do celular decodificado');}}
+  const v=$('in').value;const meta={};
+  const o=v.trim()?convert(v,{meta,title:userVal('t'),artist:userVal('a'),key:userVal('k'),capo:userVal('c').replace(/\D/g,''),plainSections:$('ps').checked,dropTabs:$('dt').checked}):'';
+  ultimo=o;$('out').value=o;
+  for(const [id,f] of Object.entries(fields)){const el=$(id);if(el.dataset.auto==='1'||!el.value.trim()){el.value=meta[f]||'';el.dataset.auto=meta[f]?'1':'';}el.classList.toggle('auto',el.dataset.auto==='1');syncX(el);}
+  $('dK').textContent=$('k').dataset.auto==='1'?(meta.keyAuto?'Detectado pelos acordes':meta.keySounding?'Forma de '+meta.keyShape+' · soa em '+meta.keySounding:'Lido da cifra'):'';
+  $('dK').className='dica'+($('k').dataset.auto==='1'?' auto':'');
+  $('dC').textContent=$('c').dataset.auto==='1'?'Lido da cifra':'';$('dC').className='dica'+($('c').dataset.auto==='1'?' auto':'');
+  $('pv').innerHTML=o?renderPreview(meta.preview||o):VAZIO;
+  const n=(o.match(/\[[^\]]+\]/g)||[]).length;
+  const e=[];
+  if(v.trim()){
+    if(n>3)e.push('<span class="etq ok">'+n+' acordes convertidos</span>');
+    else{const diag=[...new Set([...v].filter(c=>{const k=c.codePointAt(0);return (k<32&&k!==10)||k>126&&!/[À-ſ]/.test(c);}).map(c=>'U+'+c.codePointAt(0).toString(16).toUpperCase().padStart(4,'0')))].join(' ');e.push('<span class="etq erro">Poucos acordes reconhecidos'+(diag?' · código '+diag:'')+'</span>');}
+    if(meta.keyAuto)e.push('<span class="etq ouro">Tom detectado: '+meta.key+'</span>');
+    {const cp=parseInt($('c').value,10),rk=(o.match(/^\{key:\s*([^}]+)\}/m)||[])[1],sk=$('k').value.trim();if(cp>0)e.push('<span class="etq ouro">Capo '+cp+(rk&&sk?' · o arquivo vai em '+rk+' e o app mostra a forma de '+sk:'')+'</span>');}
+    if(meta.keyAuto){}else if(meta.detected&&meta.key&&meta.detected!==meta.key&&!userVal('k'))e.push('<span class="etq alerta">A cifra diz '+meta.key+', os acordes sugerem '+meta.detected+'</span>');
+    if(/\{start_of_tab\}/.test(o))e.push('<span class="etq ouro">Solo em tablatura</span>');
+  }
+  $('etqs').innerHTML=e.join('');$('etqs').style.display=e.length?'':'none';
+  const cc=$('cCel');cc.hidden=!n;cc.textContent=n;
+  $('nomeArq').textContent=o?nomeArquivo():'';
+  ['bCopiar','bBaixar','bCopiarCel','bBaixarCel'].forEach(id=>$(id).disabled=!o);
+}
+
+// Abas do resultado
+document.querySelectorAll('.abas .aba[data-v]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.aba[data-v]').forEach(x=>x.classList.toggle('on',x===b));const pv=b.dataset.v==='pv';$('pv').style.display=pv?'':'none';$('out').style.display=pv?'none':'block';});
+// Passos no celular
+function passo(n){document.querySelectorAll('.aba[data-passo]').forEach(x=>x.classList.toggle('on',x.dataset.passo==n));document.querySelectorAll('.col[data-passo]').forEach(c=>c.classList.toggle('ativo',c.dataset.passo==n));$('barra1').style.display=cel()&&n==1?'':'none';$('barra2').style.display=cel()&&n==2?'':'none';window.scrollTo(0,0);}
+document.querySelectorAll('.aba[data-passo]').forEach(b=>b.onclick=()=>passo(b.dataset.passo));
+addEventListener('resize',()=>{const a=document.querySelector('.aba[data-passo].on');passo(a?a.dataset.passo:1);});
+$('bConverter').onclick=()=>{run();if(!ultimo){aviso('Cole uma cifra primeiro');$('in').focus();return;}passo(2);};
+
+// Campos
+['t','a','k','c'].forEach(id=>{const el=$(id);el.addEventListener('input',()=>{el.dataset.auto='';el.classList.remove('auto');syncX(el);run();});el.addEventListener('keydown',e=>{if(e.key==='Escape'&&el.value){el.value='';el.dataset.auto='';syncX(el);run();e.stopPropagation();}});});
+document.querySelectorAll('.limpar-x').forEach(x=>x.onclick=()=>{const inp=x.parentElement.querySelector('input');inp.value='';inp.dataset.auto='';syncX(inp);run();inp.focus();});
+$('in').addEventListener('input',run);
+['ps','dt'].forEach(id=>$(id).addEventListener('change',run));
+function limpar(){['in','t','a','k','c'].forEach(id=>{$(id).value='';$(id).dataset.auto='';});run();$('in').focus();aviso('Pronto para a próxima música');}
+$('bLimpar').onclick=limpar;$('bLimparCel').onclick=limpar;
+
+// Copiar e baixar
+async function copiar(){if(!ultimo)return;try{await navigator.clipboard.writeText(ultimo);aviso('Texto copiado. Agora cole no SongbookPro.');}catch(e){const o=$('out');document.querySelector('.aba[data-v="tx"]').click();o.focus();o.select();aviso('Texto selecionado. Use Ctrl+C para copiar.');}}
+$('bCopiar').onclick=copiar;$('bCopiarCel').onclick=copiar;
+function baixarArquivo(nome,texto){const url=URL.createObjectURL(new Blob([texto],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=nome;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);}
+async function baixar(){
+  if(!ultimo)return;
+  const nome=nomeArquivo().replace(/\.txt$/,'.cho');
+  // Celular: abre o menu de compartilhar (Salvar em Arquivos, Drive, SongbookPro...)
+  try{
+    const f=new File([ultimo],nome,{type:'text/plain'});
+    if(cel()&&navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:nome});return;}
+  }catch(e){if(e&&e.name==='AbortError')return;}
+  baixarArquivo(nome,ultimo);aviso('Arquivo baixado: '+nome);
+}
+$('bBaixar').onclick=baixar;$('bBaixarCel').onclick=baixar;
+$('bBaixar').onclick=baixar;$('bBaixarCel').onclick=baixar;
+
+// Ajuda (painel lateral)
+function ajuda(on){$('painel').classList.toggle('on',on);$('painel').setAttribute('aria-hidden',!on);if(on)$('bFechar').focus();}
+$('bAjuda').onclick=()=>ajuda(!$('painel').classList.contains('on'));$('bFechar').onclick=()=>ajuda(false);
+addEventListener('keydown',e=>{if(e.key==='Escape'&&$('painel').classList.contains('on'))ajuda(false);});
+addEventListener('mousedown',e=>{const p=$('painel');if(p.classList.contains('on')&&!p.contains(e.target)&&!$('bAjuda').contains(e.target))ajuda(false);});
+
+// Tema (só por botão)
+function tema(t){document.documentElement.dataset.theme=t;$('tTema').textContent=t==='dark'?'Tema claro':'Tema escuro';$('bTema').innerHTML=(t==='dark'?'<svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893ZM16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364ZM19.0711 3.51472L20.4853 4.92893L18.364 7.05025L16.9497 5.63604L19.0711 3.51472ZM5.63604 16.9497L7.05025 18.364L4.92893 20.4853L3.51472 19.0711L5.63604 16.9497ZM23 11V13H20V11H23ZM4 11V13H1V11H4Z"/></svg>':'<svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 7C10 10.866 13.134 14 17 14C18.9584 14 20.729 13.1957 21.9995 11.8995C22 11.933 22 11.9665 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C12.0335 2 12.067 2 12.1005 2.00049C10.8043 3.27098 10 5.04157 10 7ZM4 12C4 16.4183 7.58172 20 12 20C15.0583 20 17.7158 18.2839 19.062 15.7621C18.3945 15.9187 17.7035 16 17 16C12.0294 16 8 11.9706 8 7C8 6.29648 8.08133 5.60547 8.2379 4.938C5.71611 6.28423 4 8.9417 4 12Z"/></svg>')+'<span class="txt-pc" id="tTema">'+(t==='dark'?'Tema claro':'Tema escuro')+'</span>';$('bTema').title=t==='dark'?'Usar tema claro':'Usar tema escuro';try{localStorage.setItem('conv-tema',t);}catch(e){}}
+$('bTema').onclick=()=>tema(document.documentElement.dataset.theme==='dark'?'light':'dark');
+try{const t=localStorage.getItem('conv-tema');if(t)tema(t);}catch(e){}
+
+addEventListener('paste',()=>setTimeout(run,0));
+run();passo(1);
+
+</script>
+</body></html>
