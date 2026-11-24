@@ -157,6 +157,12 @@ input[type=checkbox]:focus-visible{outline:2px solid color-mix(in srgb,var(--our
 html.netlify .barra-cel{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
 html.netlify .app{padding-bottom:160px}
 html.netlify .aviso{bottom:150px}
+
+@media (max-width:900px){#bColar{display:none}}
+.busca{display:flex;gap:8px;align-items:center;padding:12px 16px 8px}
+.busca .btn{text-decoration:none}
+.lupa{position:absolute;left:9px;top:8px;color:var(--texto-3)}
+@media (max-width:900px){.busca{flex-wrap:wrap}.busca .campo{flex:1 1 100%!important}.busca .btn{flex:1;height:38px}}
 </style></head>
 <body>
 <script>if(/netlify\.app$/.test(location.hostname))document.documentElement.classList.add("netlify");</script>
@@ -174,8 +180,17 @@ html.netlify .aviso{bottom:150px}
 
 <main class="app">
   <section class="col ativo" data-passo="1">
+    <div class="card">
+      <div class="card-cab"><span class="rot">Buscar cifra</span></div>
+      <div class="busca">
+        <div class="campo" style="flex:1"><div class="wrap"><svg class="ri lupa" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"/></svg><input id="q" autocomplete="off" enterkeyhint="search" placeholder="Nome da música e artista" style="padding-left:30px"><button class="limpar-x" aria-label="Limpar campo" tabindex="-1"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"/></svg></button></div></div>
+        <a class="btn btn-sec" id="aCifra" target="_blank" rel="noopener" href="https://www.cifraclub.com.br/"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"/></svg>Cifra Club</a>
+        <a class="btn btn-fan" id="aGoogle" target="_blank" rel="noopener" href="https://www.google.com/">Outros sites</a>
+      </div>
+      <div class="dica" style="padding:0 16px 12px;margin:0">Abre a busca numa aba nova. Lá, copie a cifra inteira e volte aqui para colar.</div>
+    </div>
     <div class="card flex1">
-      <div class="card-cab"><span class="rot">Cifra original</span><button class="btn btn-fan" id="bLimpar"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.58564 8.85449L3.63589 13.8042L8.83021 18.9985L9.99985 18.9978V18.9966H11.1714L14.9496 15.2184L8.58564 8.85449ZM9.99985 7.44027L16.3638 13.8042L19.1922 10.9758L12.8283 4.61185L9.99985 7.44027ZM13.9999 18.9966H20.9999V20.9966H11.9999L8.00229 20.9991L1.51457 14.5113C1.12405 14.1208 1.12405 13.4877 1.51457 13.0971L12.1212 2.49053C12.5117 2.1 13.1449 2.1 13.5354 2.49053L21.3136 10.2687C21.7041 10.6592 21.7041 11.2924 21.3136 11.6829L13.9999 18.9966Z"/></svg>Limpar</button></div>
+      <div class="card-cab"><span class="rot">Cifra original</span><button class="btn btn-sec" id="bColar"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4V2H17V4H20.0066C20.5552 4 21 4.44495 21 4.9934V21.0066C21 21.5552 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5551 3 21.0066V4.9934C3 4.44476 3.44495 4 3.9934 4H7ZM7 6H5V20H19V6H17V8H7V6ZM9 4V6H15V4H9Z"/></svg>Colar</button><button class="btn btn-fan" id="bLimpar"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.58564 8.85449L3.63589 13.8042L8.83021 18.9985L9.99985 18.9978V18.9966H11.1714L14.9496 15.2184L8.58564 8.85449ZM9.99985 7.44027L16.3638 13.8042L19.1922 10.9758L12.8283 4.61185L9.99985 7.44027ZM13.9999 18.9966H20.9999V20.9966H11.9999L8.00229 20.9991L1.51457 14.5113C1.12405 14.1208 1.12405 13.4877 1.51457 13.0971L12.1212 2.49053C12.5117 2.1 13.1449 2.1 13.5354 2.49053L21.3136 10.2687C21.7041 10.6592 21.7041 11.2924 21.3136 11.6829L13.9999 18.9966Z"/></svg>Limpar</button></div>
       <div class="card-corpo">
         <textarea id="in" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Cole aqui a cifra inteira, com título, artista e “Tom:” do topo.
 
@@ -227,7 +242,7 @@ Letra da música aqui"></textarea>
   </section>
 </main>
 
-<div class="barra-cel" id="barra1"><button class="btn btn-fan" id="bLimparCel">Limpar</button><button class="btn btn-pri" id="bConverter">Converter<svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg></button></div>
+<div class="barra-cel" id="barra1"><button class="btn btn-sec" id="bColarCel" style="flex:0 0 auto;padding:0 16px">Colar</button><button class="btn btn-pri" id="bConverter">Converter<svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg></button></div>
 <div class="barra-cel" id="barra2" style="display:none"><button class="btn btn-sec" id="bCopiarCel"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>Copiar</button><button class="btn btn-pri" id="bSbpCel"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z"/></svg>Salvar</button></div>
 
 <aside class="painel" id="painel" aria-hidden="true">
@@ -264,7 +279,18 @@ const EXTRA_OK = /^(\(|\)|\||\|\||x\d+|\(?\d+x\)?|\(?x\d+\)?|-+|\.+|%|\/|N\.C\.?
 const SECTION_RE = /^\s*\[([^\]]+)\]\s*(.*)$/;
 
 function isChord(t) { return CHORD_RE.test(t); }
+// Anotações entre parênteses na linha de acordes, como "(Frase 1)" ou "(Solo)"
+function splitAnnot(line) {
+  const notes = [];
+  const clean = line.replace(/\(([^()]*)\)/g, (m, inner) => {
+    const toks = inner.trim().split(/\s+/).filter(Boolean);
+    if (toks.length && toks.every(t => isChord(t) || EXTRA_OK.test(t))) return m;
+    notes.push(inner.trim()); return ' '.repeat(m.length);
+  });
+  return { clean, notes };
+}
 function isChordLine(line) {
+  line = splitAnnot(line).clean;
   const toks = line.trim().split(/\s+/).filter(Boolean);
   if (!toks.length) return false;
   let chords = 0;
@@ -284,7 +310,9 @@ function isTabLine(line) {
   // Com nome da corda (E|, B|...) basta ter conteúdo de tab; sem nome, exige traços
   return m[1] ? t.length >= 6 && /[-0-9]/.test(t.slice(2)) : dashes >= 4;
 }
+const PARTE_RE = /^\s*Parte \d+ de \d+\s*$/i;
 function tabStartsAt(lines, i) {
+  if (i < lines.length && PARTE_RE.test(lines[i])) { let j = i + 1; while (j < lines.length && !lines[j].trim() && j - i < 3) j++; return tabStartsAt(lines, j); }
   return i < lines.length && (isTabLine(lines[i]) || (isChordLine(lines[i]) && i + 1 < lines.length && isTabLine(lines[i + 1])));
 }
 
@@ -348,8 +376,17 @@ function convert(text, opts = {}) {
   const tomRe = /^\s*Tom:\s*([A-G][#b]?m?)(?:\s*\(\s*(?:com\s+)?forma\s+de\s+([A-G][#b]?m?)\s*\))?/i;
   const capoInRe = /capo(?:traste)?\s*(?::|na|no|em)?\s*(\d{1,2})/i;
   const capoRe = /^\s*capo(?:traste)?\s*(?::|na|no|em)?\s*(\d{1,2})\s*(?:ª|º|°|a|o)?\s*(?:casa|traste)?\s*$/i;
-  const footRe = /^\s*(composi[çc][ãa]o|colabora[çc][ãa]o|revis[ãa]o|letra e m[úu]sica|ver tamb[ée]m|exibir cifra|afina[çc][ãa]o)\b/i;
+  const footRe = /^\s*(composi[çc][ãa]o|colabora[çc][ãa]o|revis[ãa]o|letra e m[úu]sica|ver tamb[ée]m|exibir cifra)\b/i;
+  const afinRe = /^\s*afina[çc][ãa]o\s*:?\s*(.+?)\s*$/i;
   const skip = new Set();
+  // "Selecionar tudo" no celular traz o menu e o rodapé do site: corta o que vem depois da música
+  const fimRe = /^\s*(composi[çc][ãa]o\s*:|colabora[çc][ãa]o e revis[ãa]o|essa informa[çc][ãa]o est[áa] errada|envio por\b|todos artistas\s*$|©\s*\d{4})/i;
+  {
+    const tomAt = lines.findIndex(l => /^\s*Tom:/i.test(l));
+    const fim = lines.findIndex((l, j) => j > Math.max(tomAt, 0) && fimRe.test(l));
+    if (fim > 0) lines = lines.slice(0, fim);
+  }
+  const lixoRe = /^\s*(pular para o conte[úu]do|ir para o conte[úu]do|skip to content|cifra club|buscar|entrar|menu|imprimir|exibir cifra|simplificar cifra)\s*$/i;
   lines.forEach((l, j) => {
     let m;
     if (j < 15 && !meta.key && (m = l.match(tomRe))) {
@@ -358,6 +395,7 @@ function convert(text, opts = {}) {
       skip.add(j);
     }
     else if (!meta.capo && (m = l.match(capoRe))) { meta.capo = m[1]; skip.add(j); }
+    else if (j < 25 && !meta.tuning && (m = l.match(afinRe))) { meta.tuning = m[1]; skip.add(j); }
     else if (footRe.test(l)) skip.add(j);
   });
   let firstMusic = lines.findIndex((l, j) => !skip.has(j) && (isChordLine(l) || SECTION_RE.test(l) || isTabLine(l)));
@@ -365,7 +403,9 @@ function convert(text, opts = {}) {
   const tomLine = lines.findIndex((l, j) => j < 15 && tomRe.test(l));
   const headEnd = tomLine >= 0 ? Math.min(tomLine, firstMusic) : firstMusic;
   const headIdx = [];
-  for (let j = 0; j < headEnd && headIdx.length < 3; j++) if (!skip.has(j) && lines[j].trim()) headIdx.push(j);
+  for (let j = 0; j < headEnd; j++) if (!skip.has(j) && lines[j].trim()) { if (lixoRe.test(lines[j])) skip.add(j); else headIdx.push(j); }
+  // Com "Tom:" na cifra, título e artista são as 2 últimas linhas antes dele (o resto é menu do site)
+  if (tomLine >= 0 && headIdx.length > 2) headIdx.splice(0, headIdx.length - 2).forEach(j => skip.add(j));
   // só considera cabeçalho se for curto e vier antes de qualquer acorde (até 2 linhas)
   const headOk = headIdx.length >= 1 && headIdx.length <= 2 && headIdx.every(j => lines[j].trim().length < 70);
   if (headOk && headIdx.length === 1) {
@@ -384,14 +424,16 @@ function convert(text, opts = {}) {
   if (A) out.push('{artist: ' + A + '}');
   if (K) out.push('{key: ' + K + '}');
   if (C) out.push('{capo: ' + C + '}');
+  if (meta.tuning) { if (out.length) out.push(''); out.push('{comment: Afinação: ' + meta.tuning + '}'); }
   if (out.length) out.push('');
   lines = lines.filter((_, j) => !skip.has(j));
   const start = 0;
   for (let i = start; i < lines.length; i++) {
     const line = lines[i];
-    if (/^\s*Parte \d+ de \d+\s*$/i.test(line)) continue;
+    if (PARTE_RE.test(line) && !tabStartsAt(lines, i)) continue;
     const sec = line.match(SECTION_RE);
     if (sec && !isChord(sec[1].trim())) {
+      if (opts.dropTabs && /^tab\b/i.test(sec[1].trim())) continue;
       out.push(opts.plainSections ? sec[1].trim() + ':' : '{comment: ' + sec[1].trim() + '}');
       if (sec[2].trim()) out.push(isChordLine(sec[2]) ? chordsOnly(sec[2], opts) : sec[2].trim());
       continue;
@@ -412,9 +454,10 @@ function convert(text, opts = {}) {
     }
     if (isChordLine(line)) {
       const next = lines[i + 1];
+      const an = splitAnnot(line), nota = an.notes.length ? '  (' + an.notes.join(') (') + ')' : '';
       if (next !== undefined && next.trim() && !isChordLine(next) && !isExtraOnly(next) && !SECTION_RE.test(next) && !isTabLine(next)) {
-        out.push(merge(line, next)); i++;
-      } else out.push(chordsOnly(line, opts));
+        out.push(merge(an.clean, next) + nota); i++;
+      } else out.push(chordsOnly(an.clean, opts) + nota);
       continue;
     }
     out.push(line.replace(/_/g, '').replace(/\s+$/, ''));
@@ -455,7 +498,10 @@ function toSounding(text, k) {
   const km = text.match(/^\{key:\s*([^}]+)\}/m);
   const shapeKey = km ? km[1].trim() : null;
   const realKey = shapeKey ? shiftChord(shapeKey, k, false) : null;
-  const flat = realKey ? (usesFlats(realKey) || usesFlats(shiftChord(shapeKey, k, true))) : false;
+  // nome de tom mais usado para cada altura (Db e não C#, F# e não Gb...)
+  const PREF_MAJ = ['C','Db','D','Eb','E','F','F#','G','Ab','A','Bb','B'], PREF_MIN = ['C','C#','D','Eb','E','F','F#','G','G#','A','Bb','B'];
+  let flat = false;
+  if (realKey) { const mm = realKey.match(/^([A-G][#b]?)(m(?!aj))?/); const pi = NI[mm[1]]; flat = /b/.test((mm[2] ? PREF_MIN : PREF_MAJ)[pi]); }
   const realKeyName = shapeKey ? shiftChord(shapeKey, k, flat) : null;
   let inTab = false;
   return text.split('\n').map(line => {
@@ -536,7 +582,7 @@ function renderPreview(cp){
     if(/^\{(end_of_tab|eot)\}/i.test(line)){inTab=false;body.push('<pre class="pv-tab">'+esc(tab.join('\n'))+'</pre>');continue;}
     if(inTab){tab.push(line);continue;}
     if((m=line.match(/^\{(title|t|artist|key|capo)\s*:\s*(.*)\}\s*$/i))){meta[m[1].toLowerCase()==='t'?'title':m[1].toLowerCase()]=m[2];continue;}
-    if((m=line.match(/^\{(?:comment|c)\s*:\s*(.*)\}\s*$/i))){body.push('<div class="pv-sec">'+esc(m[1])+'</div>');continue;}
+    if((m=line.match(/^\{(?:comment|c)\s*:\s*(.*)\}\s*$/i))){const af=m[1].match(/^Afina[çc][ãa]o:\s*(.*)$/i);body.push(af?'<div class="pv-meta">Afinação: <b>'+esc(af[1])+'</b></div>':'<div class="pv-sec">'+esc(m[1])+'</div>');continue;}
     if(!line.trim()){body.push('<div class="pv-gap"></div>');continue;}
     if(!/\[[^\]]+\]/.test(line)){body.push('<div class="pv-line"><span class="pv-seg"><span class="pv-ch">&nbsp;</span><span class="pv-ly">'+esc(line)+'</span></span></div>');continue;}
     const parts=line.split(/(\[[^\]]+\])/);let html='',pend=null;
@@ -587,6 +633,7 @@ function run(){
     if(meta.keyAuto)e.push('<span class="etq ouro">Tom detectado: '+meta.key+'</span>');
     {const cp=parseInt($('c').value,10),rk=(o.match(/^\{key:\s*([^}]+)\}/m)||[])[1],sk=$('k').value.trim();if(cp>0)e.push('<span class="etq ouro">Capo '+cp+(rk&&sk?' · o arquivo vai em '+rk+' e o app mostra a forma de '+sk:'')+'</span>');}
     if(meta.keyAuto){}else if(meta.detected&&meta.key&&meta.detected!==meta.key&&!userVal('k'))e.push('<span class="etq alerta">A cifra diz '+meta.key+', os acordes sugerem '+meta.detected+'</span>');
+    if(meta.tuning)e.push('<span class="etq alerta">Afinação: '+esc(meta.tuning)+'</span>');
     if(/\{start_of_tab\}/.test(o))e.push('<span class="etq ouro">Solo em tablatura</span>');
   }
   $('etqs').innerHTML=e.join('');$('etqs').style.display=e.length?'':'none';
@@ -609,7 +656,7 @@ document.querySelectorAll('.limpar-x').forEach(x=>x.onclick=()=>{const inp=x.par
 $('in').addEventListener('input',run);
 ['ps','dt'].forEach(id=>$(id).addEventListener('change',run));
 function limpar(){['in','t','a','k','c'].forEach(id=>{$(id).value='';$(id).dataset.auto='';});run();$('in').focus();aviso('Pronto para a próxima música');}
-$('bLimpar').onclick=limpar;$('bLimparCel').onclick=limpar;
+$('bLimpar').onclick=limpar;
 
 // Copiar e baixar
 async function copiar(){if(!ultimo)return;try{await navigator.clipboard.writeText(ultimo);aviso('Texto copiado. Agora cole no SongbookPro.');}catch(e){const o=$('out');document.querySelector('.aba[data-v="tx"]').click();o.focus();o.select();aviso('Texto selecionado. Use Ctrl+C para copiar.');}}
@@ -655,7 +702,7 @@ function zipStore(files){ // [{name, data:Uint8Array}] sem compressão
     const c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(10,0,true);c.setUint16(12,dt,true);c.setUint16(14,dd,true);c.setUint32(16,crc,true);c.setUint32(20,sz,true);c.setUint32(24,sz,true);c.setUint16(28,nm.length,true);c.setUint32(42,off,true);
     cen.push(new Uint8Array(c.buffer),nm);off+=30+nm.length+sz;}
   const csz=cen.reduce((a,b)=>a+b.length,0),e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,csz,true);e.setUint32(16,off,true);
-  return new Blob([...parts,...cen,new Uint8Array(e.buffer)],{type:'application/octet-stream'});
+  return new Blob([...parts,...cen,new Uint8Array(e.buffer)]);
 }
 const SBP_KEYS=['A','Bb','B','C','Db','D','Eb','E','F','Gb','G','Ab'];
 const SBP_IDX={A:0,'A#':1,Bb:1,B:2,Cb:2,C:3,'B#':3,'C#':4,Db:4,D:5,'D#':6,Eb:6,E:7,Fb:7,F:8,'E#':8,'F#':9,Gb:9,G:10,'G#':11,Ab:11};
@@ -679,7 +726,7 @@ function montarSbp(texto){
 async function enviarSbp(){
   if(!ultimo)return;
   const nome=nomeArquivo().replace(/\.txt$/,'.sbp');const blob=montarSbp(ultimo);
-  try{const f=new File([blob],nome,{type:'application/octet-stream'});
+  try{const f=new File([blob],nome); // sem tipo: o iPhone identifica pela extensão .sbp
     if(cel()&&navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:nome});return;}}
   catch(e){if(e&&e.name==='AbortError')return;}
   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=nome;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
@@ -699,6 +746,22 @@ addEventListener('mousedown',e=>{const p=$('painel');if(p.classList.contains('on
 function tema(t){document.documentElement.dataset.theme=t;$('tTema').textContent=t==='dark'?'Tema claro':'Tema escuro';$('bTema').innerHTML=(t==='dark'?'<svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893ZM16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364ZM19.0711 3.51472L20.4853 4.92893L18.364 7.05025L16.9497 5.63604L19.0711 3.51472ZM5.63604 16.9497L7.05025 18.364L4.92893 20.4853L3.51472 19.0711L5.63604 16.9497ZM23 11V13H20V11H23ZM4 11V13H1V11H4Z"/></svg>':'<svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 7C10 10.866 13.134 14 17 14C18.9584 14 20.729 13.1957 21.9995 11.8995C22 11.933 22 11.9665 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C12.0335 2 12.067 2 12.1005 2.00049C10.8043 3.27098 10 5.04157 10 7ZM4 12C4 16.4183 7.58172 20 12 20C15.0583 20 17.7158 18.2839 19.062 15.7621C18.3945 15.9187 17.7035 16 17 16C12.0294 16 8 11.9706 8 7C8 6.29648 8.08133 5.60547 8.2379 4.938C5.71611 6.28423 4 8.9417 4 12Z"/></svg>')+'<span class="txt-pc" id="tTema">'+(t==='dark'?'Tema claro':'Tema escuro')+'</span>';$('bTema').title=t==='dark'?'Usar tema claro':'Usar tema escuro';try{localStorage.setItem('conv-tema',t);}catch(e){}}
 $('bTema').onclick=()=>tema(document.documentElement.dataset.theme==='dark'?'light':'dark');
 try{const t=localStorage.getItem('conv-tema');if(t)tema(t);}catch(e){}
+
+
+// ---- Busca e colar ----
+function linksBusca(){const q=$('q').value.trim();
+  $('aCifra').href=q?'https://www.cifraclub.com.br/?q='+encodeURIComponent(q):'https://www.cifraclub.com.br/';
+  $('aGoogle').href=q?'https://www.google.com/search?q='+encodeURIComponent('cifra '+q):'https://www.google.com/';
+  syncX($('q'));}
+$('q').addEventListener('input',linksBusca);
+$('q').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if($('q').value.trim())$('aCifra').click();}if(e.key==='Escape'&&$('q').value){$('q').value='';linksBusca();e.stopPropagation();}});
+document.querySelector('.busca .limpar-x').onclick=()=>{$('q').value='';linksBusca();$('q').focus();};
+$('bColar').onclick=async()=>{try{const t=await navigator.clipboard.readText();if(!t.trim()){aviso('A área de transferência está vazia. Copie a cifra primeiro.');return;}
+  ['t','a','k','c'].forEach(id=>{$(id).value='';$(id).dataset.auto='';});$('in').value=t;run();
+  aviso('Cifra colada'+(ultimo?' e convertida':''));if(cel()&&ultimo)passo(2);}
+  catch(e){$('in').focus();aviso('Não deu para colar sozinho. Toque e segure na caixa e escolha Colar.');}};
+linksBusca();
+$('bColarCel').onclick=()=>$('bColar').click();
 
 addEventListener('paste',()=>setTimeout(run,0));
 run();passo(1);
