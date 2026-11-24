@@ -152,8 +152,14 @@ input[type=checkbox]:focus-visible{outline:2px solid color-mix(in srgb,var(--our
   .painel{width:100%}
   .aviso{bottom:80px}
 }
+
+/* Espaço para o selo do Netlify, que fica fixo no canto de baixo */
+html.netlify .barra-cel{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+html.netlify .app{padding-bottom:160px}
+html.netlify .aviso{bottom:150px}
 </style></head>
 <body>
+<script>if(/netlify\.app$/.test(location.hostname))document.documentElement.classList.add("netlify");</script>
 <header class="topo"><div class="topo-in">
   <div><h1>Conversor de cifra</h1><div class="sub">Cola a cifra do Cifra Club e sai pronta para o SongbookPro</div></div>
   <div class="esp"></div>
@@ -215,21 +221,21 @@ Letra da música aqui"></textarea>
         <span class="rot" style="text-transform:none;letter-spacing:0;font-weight:400;font-size:12px" id="nomeArq"></span>
         <div class="esp"></div>
         <button class="btn btn-sec" id="bCopiar"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>Copiar texto</button>
-        <button class="btn btn-pri" id="bBaixar"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z"/></svg>Baixar arquivo</button>
+        <button class="btn btn-pri" id="bSbp"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z"/></svg>Salvar</button>
       </div>
     </div>
   </section>
 </main>
 
 <div class="barra-cel" id="barra1"><button class="btn btn-fan" id="bLimparCel">Limpar</button><button class="btn btn-pri" id="bConverter">Converter<svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg></button></div>
-<div class="barra-cel" id="barra2" style="display:none"><button class="btn btn-sec" id="bCopiarCel"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>Copiar</button><button class="btn btn-pri" id="bBaixarCel"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z"/></svg>Salvar arquivo</button></div>
+<div class="barra-cel" id="barra2" style="display:none"><button class="btn btn-sec" id="bCopiarCel"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>Copiar</button><button class="btn btn-pri" id="bSbpCel"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z"/></svg>Salvar</button></div>
 
 <aside class="painel" id="painel" aria-hidden="true">
   <div class="card-cab"><span class="rot">Como importar no SongbookPro</span><button class="btn btn-fan" id="bFechar">Fechar <kbd>Esc</kbd></button></div>
   <div class="painel-corpo">
-    <h3>Jeito completo (com título, tom e capo)</h3>
+    <h3>Salvar a música</h3>
     <ol>
-      <li>Toque em <b>Baixar arquivo</b> (no celular, <b>Salvar arquivo</b>). No celular abre o menu de compartilhar: escolha <b>Salvar em Arquivos</b>, o <b>Google Drive</b> ou direto o <b>SongbookPro</b>. O arquivo já sai como <code>.cho</code>.</li>
+      <li>Toque em <b>Salvar</b>. No celular abre o menu de compartilhar: escolha o <b>SongbookPro</b>, <b>Salvar em Arquivos</b> ou o <b>Google Drive</b>. No computador o arquivo é baixado. Ele sai no formato do próprio app (<code>.sbp</code>), já com título, artista, tom e capo.</li>
       <li>No SongbookPro: menu principal → modo <b>Músicas</b> → botão de baixo → <b>Import file</b>.</li>
       <li>Se salvou em Arquivos ou no Drive: no SongbookPro, <b>Import file</b> e escolha o arquivo. Dá para escolher vários de uma vez.</li>
       
@@ -585,8 +591,8 @@ function run(){
   }
   $('etqs').innerHTML=e.join('');$('etqs').style.display=e.length?'':'none';
   const cc=$('cCel');cc.hidden=!n;cc.textContent=n;
-  $('nomeArq').textContent=o?nomeArquivo():'';
-  ['bCopiar','bBaixar','bCopiarCel','bBaixarCel'].forEach(id=>$(id).disabled=!o);
+  $('nomeArq').textContent=o?nomeArquivo().replace(/\.txt$/,'.sbp'):'';
+  ['bCopiar','bCopiarCel','bSbp','bSbpCel'].forEach(id=>$(id).disabled=!o);
 }
 
 // Abas do resultado
@@ -619,8 +625,69 @@ async function baixar(){
   }catch(e){if(e&&e.name==='AbortError')return;}
   baixarArquivo(nome,ultimo);aviso('Arquivo baixado: '+nome);
 }
-$('bBaixar').onclick=baixar;$('bBaixarCel').onclick=baixar;
-$('bBaixar').onclick=baixar;$('bBaixarCel').onclick=baixar;
+
+// ---- Arquivo .sbp (formato próprio do SongbookPro) ----
+// Estrutura vista num arquivo exportado pelo app: zip com dataFile.txt ("1.0\r\n" + JSON)
+// e dataFile.hash (MD5 do dataFile.txt). O hash da música é o MD5 do conteúdo com \r\n.
+function md5(str){const b=new TextEncoder().encode(str);return md5b(b);}
+function md5b(bytes){
+  const K=new Uint32Array(64),S=[7,12,17,22,7,12,17,22,7,12,17,22,7,12,17,22,5,9,14,20,5,9,14,20,5,9,14,20,5,9,14,20,4,11,16,23,4,11,16,23,4,11,16,23,4,11,16,23,6,10,15,21,6,10,15,21,6,10,15,21,6,10,15,21];
+  for(let i=0;i<64;i++)K[i]=Math.floor(Math.abs(Math.sin(i+1))*4294967296)>>>0;
+  const len=bytes.length,nb=((len+8)>>>6)+1,M=new Uint32Array(nb*16);
+  for(let i=0;i<len;i++)M[i>>2]|=bytes[i]<<((i%4)*8);
+  M[len>>2]|=0x80<<((len%4)*8);M[nb*16-2]=(len*8)>>>0;M[nb*16-1]=Math.floor(len/536870912)>>>0;
+  let a0=0x67452301,b0=0xefcdab89,c0=0x98badcfe,d0=0x10325476;
+  for(let o=0;o<M.length;o+=16){let A=a0,B=b0,C=c0,D=d0;
+    for(let i=0;i<64;i++){let F,g;
+      if(i<16){F=(B&C)|(~B&D);g=i;}else if(i<32){F=(D&B)|(~D&C);g=(5*i+1)%16;}else if(i<48){F=B^C^D;g=(3*i+5)%16;}else{F=C^(B|~D);g=(7*i)%16;}
+      F=(F+A+K[i]+M[o+g])>>>0;A=D;D=C;C=B;B=(B+((F<<S[i])|(F>>>(32-S[i]))))>>>0;}
+    a0=(a0+A)>>>0;b0=(b0+B)>>>0;c0=(c0+C)>>>0;d0=(d0+D)>>>0;}
+  return [a0,b0,c0,d0].map(x=>[0,8,16,24].map(s=>((x>>>s)&255).toString(16).padStart(2,'0')).join('')).join('');
+}
+const CRC_T=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
+function crc32(b){let c=0xffffffff;for(let i=0;i<b.length;i++)c=CRC_T[(c^b[i])&255]^(c>>>8);return (c^0xffffffff)>>>0;}
+function zipStore(files){ // [{name, data:Uint8Array}] sem compressão
+  const enc=new TextEncoder(),parts=[],cen=[];let off=0;
+  const d=new Date(),dt=((d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1))&0xffff,dd=(((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate())&0xffff;
+  for(const f of files){const nm=enc.encode(f.name),crc=crc32(f.data),sz=f.data.length;
+    const h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);h.setUint16(10,dt,true);h.setUint16(12,dd,true);h.setUint32(14,crc,true);h.setUint32(18,sz,true);h.setUint32(22,sz,true);h.setUint16(26,nm.length,true);h.setUint16(28,0,true);
+    parts.push(new Uint8Array(h.buffer),nm,f.data);
+    const c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(10,0,true);c.setUint16(12,dt,true);c.setUint16(14,dd,true);c.setUint32(16,crc,true);c.setUint32(20,sz,true);c.setUint32(24,sz,true);c.setUint16(28,nm.length,true);c.setUint32(42,off,true);
+    cen.push(new Uint8Array(c.buffer),nm);off+=30+nm.length+sz;}
+  const csz=cen.reduce((a,b)=>a+b.length,0),e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,csz,true);e.setUint32(16,off,true);
+  return new Blob([...parts,...cen,new Uint8Array(e.buffer)],{type:'application/octet-stream'});
+}
+const SBP_KEYS=['A','Bb','B','C','Db','D','Eb','E','F','Gb','G','Ab'];
+const SBP_IDX={A:0,'A#':1,Bb:1,B:2,Cb:2,C:3,'B#':3,'C#':4,Db:4,D:5,'D#':6,Eb:6,E:7,Fb:7,F:8,'E#':8,'F#':9,Gb:9,G:10,'G#':11,Ab:11};
+function semAcento(t){return t.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
+function montarSbp(texto){
+  const meta={};const corpo=[];
+  for(const l of texto.split('\n')){const m=l.match(/^\{(title|artist|key|capo)\s*:\s*(.*)\}\s*$/i);if(m){meta[m[1].toLowerCase()]=m[2].trim();continue;}corpo.push(l);}
+  while(corpo.length&&!corpo[0].trim())corpo.shift();
+  const content=corpo.join('\n').replace(/\{comment:/g,'{c:').replace(/\s+$/,'')+'\n\n';
+  const capo=parseInt(meta.capo||'0',10)||0;
+  const km=(meta.key||'').match(/^([A-G][#b]?)/);const key=km&&SBP_IDX[km[1]]!==undefined?SBP_IDX[km[1]]:-1;
+  const nome=meta.title||'Música sem título',autor=meta.artist||'';
+  const primeira=(corpo.find(l=>l.trim()&&!/^\{/.test(l))||'').replace(/\[[^\]]*\]/g,'');
+  const song={Id:Math.floor(Date.now()/1000)%1000000,author:autor,Capo:capo,content,hash:md5(content.replace(/\n/g,'\r\n')),key:key,KeyShift:capo?(12-capo)%12:0,name:nome,subTitle:'',type:1,
+    ModifiedDateTime:new Date().toISOString(),Deleted:false,SyncId:'',timeSig:'',ZoomFactor:1.0,Duration:0,Duration2:0,_displayParams:'{}',TempoInt:0,_tags:'[]',Url:'',
+    DeepSearch:semAcento(nome)+'\n'+semAcento(autor)+'\n'+semAcento(primeira.trim())+'\n',Copyright:'',NotesText:'',Zoom:1.0,SectionOrder:'',SongNumber:0,HasChildren:0,ParentId:0,vName:null,locked:0,LinkedAudio:null,Chords:null,midiOnLoad:null,importSource:'file',_folders:'[]',drawingPathsBackup:null};
+  const data='1.0\r\n'+JSON.stringify({songs:[song],sets:[],folders:[]});
+  const enc=new TextEncoder(),db=enc.encode(data);
+  return zipStore([{name:'dataFile.txt',data:db},{name:'dataFile.hash',data:enc.encode(md5b(db))}]);
+}
+async function enviarSbp(){
+  if(!ultimo)return;
+  const nome=nomeArquivo().replace(/\.txt$/,'.sbp');const blob=montarSbp(ultimo);
+  try{const f=new File([blob],nome,{type:'application/octet-stream'});
+    if(cel()&&navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:nome});return;}}
+  catch(e){if(e&&e.name==='AbortError')return;}
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=nome;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
+  aviso('Arquivo baixado: '+nome+'. Abra no SongbookPro.');
+}
+$('bSbp').onclick=enviarSbp;$('bSbpCel').onclick=enviarSbp;
+
+
 
 // Ajuda (painel lateral)
 function ajuda(on){$('painel').classList.toggle('on',on);$('painel').setAttribute('aria-hidden',!on);if(on)$('bFechar').focus();}
